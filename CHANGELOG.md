@@ -1,3 +1,7 @@
+# [0.0.5]() - 7 March 2022 [Unreleased]
+
+- Fixed issue [#42 - WeekDayTile causes RenderFlex-Overflow](https://github.com/SimformSolutionsPvtLtd/flutter_calendar_view/issues/42)
+
 # [0.0.4](https://github.com/SimformSolutionsPvtLtd/flutter_calendar_view/tree/0.0.4)
 
 - Fixed issue [#39 - Detect a long press on the calendar](https://github.com/SimformSolutionsPvtLtd/flutter_calendar_view/issues/39)
