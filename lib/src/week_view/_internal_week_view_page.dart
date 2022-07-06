@@ -13,7 +13,7 @@ import '../painters.dart';
 import '../typedefs.dart';
 
 /// A single page for week view.
-class InternalWeekViewPage<T> extends StatelessWidget {
+class InternalWeekViewPage<T extends Object?> extends StatelessWidget {
   /// Width of the page.
   final double width;
 
@@ -86,6 +86,10 @@ class InternalWeekViewPage<T> extends StatelessWidget {
   /// Called when user long press on calendar.
   final DatePressCallback? onDateLongPress;
 
+  /// Defines size of the slots that provides long press callback on area
+  /// where events are not there.
+  final MinuteSlotSize minuteSlotSize;
+
   /// A single page for week view.
   const InternalWeekViewPage({
     Key? key,
@@ -112,6 +116,7 @@ class InternalWeekViewPage<T> extends StatelessWidget {
     required this.onTileTap,
     required this.onDateLongPress,
     required this.weekDays,
+    required this.minuteSlotSize,
   }) : super(key: key);
 
   @override
@@ -189,9 +194,10 @@ class InternalWeekViewPage<T> extends StatelessWidget {
                                     PressDetector(
                                       width: weekTitleWidth,
                                       height: height,
-                                      hourHeight: hourHeight,
+                                      heightPerMinute: heightPerMinute,
                                       date: dates[index],
                                       onDateLongPress: onDateLongPress,
+                                      minuteSlotSize: minuteSlotSize,
                                     ),
                                     EventGenerator<T>(
                                       height: height,
@@ -240,18 +246,12 @@ class InternalWeekViewPage<T> extends StatelessWidget {
   List<DateTime> _filteredDate() {
     final output = <DateTime>[];
 
-    final weekDays = this.weekDays.toList()
-      ..sort((d1, d2) => d1.index - d2.index);
+    final weekDays = this.weekDays.toList();
 
-    var weekDayIndex = 0;
-    var dateCounter = 0;
-
-    while (weekDayIndex < weekDays.length && dateCounter < dates.length) {
-      if (dates[dateCounter].weekday == weekDays[weekDayIndex].index + 1) {
-        output.add(dates[dateCounter]);
-        weekDayIndex++;
+    for (final date in dates) {
+      if (weekDays.any((weekDay) => weekDay.index + 1 == date.weekday)) {
+        output.add(date);
       }
-      dateCounter++;
     }
 
     return output;
